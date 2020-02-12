@@ -7,6 +7,17 @@ import signal
 
 async def main():
     futures = []
+    salt_uid = os.environ['SALT_UID'] if 'SALT_UID' in os.environ else '100'
+    salt_gid = os.environ['SALT_GID'] if 'SALT_GID' in os.environ else '450'
+
+    print("Setting salt UID to {}".format(salt_uid))
+    usermod = await asyncio.create_subprocess_exec('usermod', '-u', salt_uid, 'salt')
+    await usermod.wait()
+
+    print("Setting salt GID to {}".format(salt_gid))
+    groupmod = await asyncio.create_subprocess_exec('groupmod', '-g', salt_gid, 'salt')
+    await groupmod.wait()
+
     if 'SALT_MINION_CONFIG' in os.environ:
         with open('/etc/salt/minion.d/minion.conf', 'w') as minion_file:
             json.dump(json.loads(os.environ['SALT_MINION_CONFIG']), minion_file)
