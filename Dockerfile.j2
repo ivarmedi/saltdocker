@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-RUN apk add --no-cache gcc g++ autoconf make libffi-dev openssl-dev dumb-init
+RUN apk add --no-cache gcc g++ autoconf make libffi-dev openssl-dev dumb-init shadow
 
 RUN addgroup -S salt && adduser -s /bin/sh -SD -G salt salt && \
     mkdir -p /etc/pki /etc/salt/pki /etc/salt/minion.d/ /etc/salt/master.d /etc/salt/proxy.d /var/cache/salt /var/log/salt /var/run/salt && \
